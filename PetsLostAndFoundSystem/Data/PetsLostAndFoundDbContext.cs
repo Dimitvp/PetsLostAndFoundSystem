@@ -15,6 +15,9 @@ namespace PetsLostAndFoundSystem.Data
 
         public DbSet<Ad> Ads { get; set; }
 
+        public DbSet<Shelter> Shelters { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -28,6 +31,12 @@ namespace PetsLostAndFoundSystem.Data
                 .HasOne(a => a.Author)
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.AuthorId);
+
+            builder
+               .Entity<Shelter>()
+               .HasOne(a => a.Author)
+               .WithMany(u => u.Shelters)
+               .HasForeignKey(a => a.AuthorId);
 
             base.OnModelCreating(builder);
         }
