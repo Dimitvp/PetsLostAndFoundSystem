@@ -13,7 +13,7 @@ namespace PetsLostAndFoundSystem.Data
 
         public DbSet<Article> Articles { get; set; }
 
-        public DbSet<Ad> Ads { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         public DbSet<Shelter> Shelters { get; set; }
 
@@ -21,9 +21,9 @@ namespace PetsLostAndFoundSystem.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
-                .Entity<Ad>()
+                .Entity<Report>()
                 .HasOne(a => a.Author)
-                .WithMany(u => u.Ads)
+                .WithMany(u => u.Reports)
                 .HasForeignKey(a => a.AuthorId);
 
             builder

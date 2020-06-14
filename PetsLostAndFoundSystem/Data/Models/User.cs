@@ -14,7 +14,7 @@ namespace PetsLostAndFoundSystem.Data.Models
 
         public List<Article> Articles { get; set; } = new List<Article>();
 
-        public List<Ad> Ads { get; set; } = new List<Ad>();
+        public List<Report> Reports { get; set; } = new List<Report>();
 
         public List<Shelter> Shelters { get; set; } = new List<Shelter>();
     }
