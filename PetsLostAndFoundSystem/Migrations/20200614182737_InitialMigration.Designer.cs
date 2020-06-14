@@ -10,8 +10,8 @@ using PetsLostAndFoundSystem.Data;
 namespace PetsLostAndFoundSystem.Migrations
 {
     [DbContext(typeof(PetsLostAndFoundDbContext))]
-    [Migration("20200614131013_RenameAdToReport")]
-    partial class RenameAdToReport
+    [Migration("20200614182737_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,12 +154,11 @@ namespace PetsLostAndFoundSystem.Migrations
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Article", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
@@ -185,22 +184,143 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Report", b =>
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Author", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Authors");
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorId")
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<int>("Dislikes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Pet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PetDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PetType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RFID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReporterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReporterId");
+
+                    b.ToTable("Pets");
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Report", b =>
+                {
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagesLinksPost")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(2000)")
+                        .HasMaxLength(2000);
+
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LostDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PicUrl")
                         .HasColumnType("nvarchar(2000)")
@@ -209,6 +329,16 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ReporterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double?>("RewardSum")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -216,9 +346,38 @@ namespace PetsLostAndFoundSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("PetId");
+
+                    b.HasIndex("ReporterId");
 
                     b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Reporter", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Reporters");
                 });
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Shelter", b =>
@@ -271,6 +430,9 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ReporterId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -281,6 +443,8 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("ReporterId");
 
                     b.ToTable("Shelters");
                 });
@@ -304,15 +468,17 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -340,6 +506,9 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -407,23 +576,87 @@ namespace PetsLostAndFoundSystem.Migrations
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Article", b =>
                 {
-                    b.HasOne("PetsLostAndFoundSystem.Data.Models.User", "Author")
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Author", "Author")
                         .WithMany("Articles")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Author", b =>
+                {
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.User", "User")
+                        .WithOne("Author")
+                        .HasForeignKey("PetsLostAndFoundSystem.Data.Models.Author", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Comment", b =>
+                {
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Report", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Pet", b =>
+                {
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Reporter", "Reporter")
+                        .WithMany("Pets")
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Report", b =>
                 {
-                    b.HasOne("PetsLostAndFoundSystem.Data.Models.User", "Author")
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Location", "Location")
                         .WithMany("Reports")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Pet", "Pet")
+                        .WithMany("Reports")
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Reporter", "Reporter")
+                        .WithMany("Reports")
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Reporter", b =>
+                {
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.User", "User")
+                        .WithOne("Reporter")
+                        .HasForeignKey("PetsLostAndFoundSystem.Data.Models.Reporter", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Shelter", b =>
                 {
-                    b.HasOne("PetsLostAndFoundSystem.Data.Models.User", "Author")
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Author", "Author")
                         .WithMany("Shelters")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PetsLostAndFoundSystem.Data.Models.Reporter", "Reporter")
+                        .WithMany("Shelters")
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

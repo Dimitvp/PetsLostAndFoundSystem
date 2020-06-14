@@ -51,6 +51,10 @@ namespace PetsLostAndFoundSystem.Data.Models
 
         public string AuthorId { get; set; }
 
-        public User Author { get; set; }
+        public Author Author { get; set; }
+
+        public string ReporterId { get; set; }
+
+        public Reporter Reporter { get; set; }
     }
 }

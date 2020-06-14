@@ -1,22 +1,27 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
 using PetsLostAndFoundSystem.Constants;
+using System.Collections.Generic;
 
 namespace PetsLostAndFoundSystem.Data.Models
 {
     public class User : IdentityUser
     {
-        [MinLength(DataConstants.UserNameMinLength)]
-        [MaxLength(DataConstants.UserNameMaxLength)]
-        public string Name { get; set; }
+        public User()
+        {
+            this.Comments = new List<Comment>();
+        }
 
-        public List<Article> Articles { get; set; } = new List<Article>();
+        public UserType UserType { get; set; }
 
-        public List<Report> Reports { get; set; } = new List<Report>();
+        public double Latitude { get; set; }
 
-        public List<Shelter> Shelters { get; set; } = new List<Shelter>();
+        public double Longitude { get; set; }
+
+        public Author Author { get; set; }
+
+        public Reporter Reporter { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }
     
