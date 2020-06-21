@@ -16,5 +16,12 @@
 
         public const int BusinessAddressMinLength = 5;
         public const int BusinessAddressMaxLength = 250;
+
+        public const int EmailMinLength = 3;
+        public const int EmailMaxLength = 90;
+
+        public const int PhoneNumberMinLength = 5;
+        public const int PhoneNumberMaxLength = 20;
+        public const string PhoneNumberRegularExpression = @"\+[0-9]*";
     }
 }

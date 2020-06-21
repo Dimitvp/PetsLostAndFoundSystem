@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +16,9 @@ using Microsoft.Extensions.Hosting;
 using PetsLostAndFoundSystem.Data;
 using PetsLostAndFoundSystem.Data.Models;
 using PetsLostAndFoundSystem.Infrastructure.Extensions;
+using PetsLostAndFoundSystem.Services.Contracts;
+using PetsLostAndFoundSystem.Services.Identity;
+using PetsLostAndFoundSystem.Services.Reporters;
 
 namespace PetsLostAndFoundSystem
 {
@@ -47,6 +52,14 @@ namespace PetsLostAndFoundSystem
                 options.EnableEndpointRouting = false;
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
+            services.AddTransient<IReporterService, ReporterService>();
 
             services.AddControllersWithViews();
         }
