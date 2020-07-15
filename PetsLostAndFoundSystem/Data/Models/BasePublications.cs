@@ -6,7 +6,7 @@ namespace PetsLostAndFoundSystem.Data.Models
 {
     public class BasePublications
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MinLength(DataConstants.PublicationTitleMinLength)]

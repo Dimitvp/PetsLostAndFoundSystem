@@ -15,7 +15,7 @@ namespace PetsLostAndFoundSystem.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.4")
+                .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -152,12 +152,13 @@ namespace PetsLostAndFoundSystem.Migrations
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Article", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -184,8 +185,10 @@ namespace PetsLostAndFoundSystem.Migrations
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Author", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -222,9 +225,8 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -283,9 +285,8 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<string>("RFID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReporterId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ReporterId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -296,8 +297,10 @@ namespace PetsLostAndFoundSystem.Migrations
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Report", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -327,9 +330,8 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ReporterId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ReporterId")
+                        .HasColumnType("int");
 
                     b.Property<double?>("RewardSum")
                         .HasColumnType("float");
@@ -355,8 +357,10 @@ namespace PetsLostAndFoundSystem.Migrations
 
             modelBuilder.Entity("PetsLostAndFoundSystem.Data.Models.Reporter", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -390,8 +394,8 @@ namespace PetsLostAndFoundSystem.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -428,8 +432,8 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ReporterId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ReporterId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -649,12 +653,14 @@ namespace PetsLostAndFoundSystem.Migrations
                     b.HasOne("PetsLostAndFoundSystem.Data.Models.Author", "Author")
                         .WithMany("Shelters")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("PetsLostAndFoundSystem.Data.Models.Reporter", "Reporter")
                         .WithMany("Shelters")
                         .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

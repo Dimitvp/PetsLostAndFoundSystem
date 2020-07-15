@@ -49,11 +49,11 @@ namespace PetsLostAndFoundSystem.Data.Models
 
         public bool IsApproved { get; set; }
 
-        public string AuthorId { get; set; }
+        public int AuthorId { get; set; }
 
         public Author Author { get; set; }
 
-        public string ReporterId { get; set; }
+        public int ReporterId { get; set; }
 
         public Reporter Reporter { get; set; }
     }

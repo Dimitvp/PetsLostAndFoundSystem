@@ -33,7 +33,7 @@ namespace PetsLostAndFoundSystem.Data.Models
         public Location Location { get; set; }
         public bool IsApproved { get; set; }
 
-        public string ReporterId { get; set; }
+        public int ReporterId { get; set; }
 
         public Reporter Reporter { get; set; }
     }

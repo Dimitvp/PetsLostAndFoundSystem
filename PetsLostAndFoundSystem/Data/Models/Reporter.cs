@@ -6,7 +6,7 @@ namespace PetsLostAndFoundSystem.Data.Models
 {
     public class Reporter
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [MinLength(DataConstants.UserNameMinLength)]
         public string Name { get; set; }

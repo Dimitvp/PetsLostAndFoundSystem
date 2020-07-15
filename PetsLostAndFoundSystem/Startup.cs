@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using PetsLostAndFoundSystem.Data;
 using PetsLostAndFoundSystem.Data.Models;
 using PetsLostAndFoundSystem.Infrastructure.Extensions;
@@ -39,6 +42,7 @@ namespace PetsLostAndFoundSystem
 
             services.AddIdentity<User, IdentityRole>(options =>
             {
+                options.Password.RequiredLength = 4;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
@@ -47,21 +51,51 @@ namespace PetsLostAndFoundSystem
                 .AddEntityFrameworkStores<PetsLostAndFoundDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(options =>
-            {
-                options.EnableEndpointRouting = false;
-                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-            });
+            //services.AddMvc(options =>
+            //{
+            //    options.EnableEndpointRouting = false;
+            //    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            //});
+
+            var secret = this.Configuration
+                .GetSection(nameof(ApplicationSettings))
+                .GetValue<string>(nameof(ApplicationSettings.Secret));
+
+            services
+                .Configure<ApplicationSettings>(this.Configuration
+                    .GetSection(nameof(ApplicationSettings)));
+
+            var key = Encoding.ASCII.GetBytes(secret);
+
+            services
+                .AddAuthentication(authentication =>
+                {
+                    authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(bearer =>
+                {
+                    bearer.RequireHttpsMetadata = false;
+                    bearer.SaveToken = true;
+                    bearer.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddControllersWithViews(options => options
+                    .Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
             services.AddTransient<IReporterService, ReporterService>();
-
-            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,12 +120,15 @@ namespace PetsLostAndFoundSystem
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseEndpoints(endpoints => endpoints
+                    .MapDefaultControllerRoute());
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Index}/{id?}");
+            //});
         }
     }
 }

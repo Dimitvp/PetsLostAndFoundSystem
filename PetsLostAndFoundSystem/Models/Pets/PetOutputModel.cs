@@ -1,16 +1,11 @@
 ﻿using PetsLostAndFoundSystem.Constants;
-using System.Collections.Generic;
+using PetsLostAndFoundSystem.Data.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace PetsLostAndFoundSystem.Data.Models
+namespace PetsLostAndFoundSystem.Models.Pets
 {
-    public class Pet
+    public class PetOutputModel : IMapFrom<Pet>
     {
-        public Pet()
-        {
-            this.Reports = new List<Report>();
-        }
-
         public int Id { get; set; }
 
         public PetType PetType { get; set; }
@@ -23,12 +18,5 @@ namespace PetsLostAndFoundSystem.Data.Models
         public string RFID { get; set; }
 
         public string PetDescription { get; set; }
-
-        public int ReporterId { get; set; }
-
-        [Required]
-        public Reporter Reporter { get; set; }
-
-        public ICollection<Report> Reports { get; set; }
     }
 }

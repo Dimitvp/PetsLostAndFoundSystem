@@ -15,7 +15,7 @@ namespace PetsLostAndFoundSystem.Data.Models
         [Required]
         public User User { get; set; }
 
-        public string PostId { get; set; }
+        public int PostId { get; set; }
 
         [Required]
         public Report Post { get; set; }

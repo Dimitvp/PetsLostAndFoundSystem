@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PetsLostAndFoundSystem.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class CreateDataBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -174,7 +174,8 @@ namespace PetsLostAndFoundSystem.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -193,7 +194,8 @@ namespace PetsLostAndFoundSystem.Migrations
                 name: "Reporters",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
@@ -213,12 +215,13 @@ namespace PetsLostAndFoundSystem.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(maxLength: 50, nullable: false),
                     Content = table.Column<string>(nullable: false),
                     PicUrl = table.Column<string>(maxLength: 2000, nullable: true),
                     PublishDate = table.Column<DateTime>(nullable: false),
-                    AuthorId = table.Column<string>(nullable: false)
+                    AuthorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,7 +245,7 @@ namespace PetsLostAndFoundSystem.Migrations
                     Age = table.Column<int>(nullable: false),
                     RFID = table.Column<string>(nullable: true),
                     PetDescription = table.Column<string>(nullable: true),
-                    ReporterId = table.Column<string>(nullable: false)
+                    ReporterId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,8 +277,8 @@ namespace PetsLostAndFoundSystem.Migrations
                     Image = table.Column<string>(nullable: true),
                     PublishDate = table.Column<DateTime>(nullable: false),
                     IsApproved = table.Column<bool>(nullable: false),
-                    AuthorId = table.Column<string>(nullable: true),
-                    ReporterId = table.Column<string>(nullable: true)
+                    AuthorId = table.Column<int>(nullable: false),
+                    ReporterId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,7 +301,8 @@ namespace PetsLostAndFoundSystem.Migrations
                 name: "Reports",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(maxLength: 50, nullable: false),
                     Content = table.Column<string>(nullable: false),
                     PicUrl = table.Column<string>(maxLength: 2000, nullable: true),
@@ -310,7 +314,7 @@ namespace PetsLostAndFoundSystem.Migrations
                     PetId = table.Column<int>(nullable: false),
                     LocationId = table.Column<int>(nullable: false),
                     IsApproved = table.Column<bool>(nullable: false),
-                    ReporterId = table.Column<string>(nullable: false)
+                    ReporterId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -343,7 +347,7 @@ namespace PetsLostAndFoundSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(maxLength: 255, nullable: false),
                     UserId = table.Column<string>(nullable: false),
-                    PostId = table.Column<string>(nullable: false),
+                    PostId = table.Column<int>(nullable: false),
                     Likes = table.Column<int>(nullable: false),
                     Dislikes = table.Column<int>(nullable: false)
                 },

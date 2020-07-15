@@ -24,9 +24,19 @@ namespace PetsLostAndFoundSystem.Controllers
             this.reporters = reporters;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route(nameof(Register))]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
         [HttpPost]
         [Route(nameof(Register))]
-        public async Task<ActionResult> Register(
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register([FromForm]
             CreateUserInputModel input)
         {
             var result = await this.identity.Register(input);
@@ -41,7 +51,7 @@ namespace PetsLostAndFoundSystem.Controllers
             var reporter = new Reporter
             {
                 Name = input.Name,
-                PhoneNumber = input.PhoneNumber,
+                PhoneNumber = input.Phone,
                 UserId = user.Id
             };
 
@@ -49,6 +59,11 @@ namespace PetsLostAndFoundSystem.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route(nameof(Login))]
+        public IActionResult Login() => View();
 
         [HttpPost]
         [Route(nameof(Login))]
