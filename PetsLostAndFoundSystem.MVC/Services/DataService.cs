@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace PetsLostAndFoundSystem.Services
+using PetsLostAndFoundSystem.MVC.Data;
+using PetsLostAndFoundSystem.MVC.Services.Contracts;
+
+namespace PetsLostAndFoundSystem.MVC.Services
 {
     public abstract class DataService<TEntity> : IDataService<TEntity>
         where TEntity : class
     {
-        protected DataService(DbContext db) => this.Data = db;
+        protected DataService(PetsLostAndFoundDbContext db) => this.Data = db;
 
-        protected DbContext Data { get; }
+        protected PetsLostAndFoundDbContext Data { get; }
 
         protected IQueryable<TEntity> All() => this.Data.Set<TEntity>();
 

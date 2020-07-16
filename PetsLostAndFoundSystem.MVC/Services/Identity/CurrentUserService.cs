@@ -3,7 +3,9 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.Http;
 
-namespace PetsLostAndFoundSystem.Services.Identity
+using PetsLostAndFoundSystem.MVC.Services.Contracts;
+
+namespace PetsLostAndFoundSystem.MVC.Services.Identity
 {
     public class CurrentUserService : ICurrentUserService
     {
