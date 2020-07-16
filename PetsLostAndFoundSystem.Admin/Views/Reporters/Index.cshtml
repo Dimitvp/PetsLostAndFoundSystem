@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ReporterDetailsOutputModel>
+
+@{ ViewData["Title"] = "All Reporters"; }
+
+<div class="row">
+    <div class="col-lg-4">
+        <h2>All Reporters</h2>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Total Reports</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reporter in Model)
+        {
+<tr>
+    <td>@reporter.Name</td>
+    <td>@reporter.PhoneNumber</td>
+    <td>@reporter.TotalReports</td>
+    <td>
+        <a class="btn btn-primary"
+           asp-area=""
+           asp-controller="Reporters"
+           asp-action="Edit"
+           asp-route-id="@reporter.Id">
+            Edit
+        </a>
+    </td>
+</tr>}
+    </tbody>
+</table>

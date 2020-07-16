@@ -1,4 +1,4 @@
-﻿namespace PetsLostAndFoundSystem.Admin.Infrastructure
+﻿namespace PetsLostAndFoundSystem.Infrastructure
 {
     public class InfrastructureConstants
     {

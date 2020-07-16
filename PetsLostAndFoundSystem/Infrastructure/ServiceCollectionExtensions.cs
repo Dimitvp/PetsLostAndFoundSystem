@@ -1,11 +1,13 @@
-﻿using System.Text;
-
+﻿using System;
+using System.Reflection;
+using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-
+using PetsLostAndFoundSystem.Models;
 using PetsLostAndFoundSystem.Services.Identity;
 
 namespace PetsLostAndFoundSystem.Infrastructure
@@ -76,5 +78,14 @@ namespace PetsLostAndFoundSystem.Infrastructure
 
             return services;
         }
+
+        public static IServiceCollection AddAutoMapperProfile(
+            this IServiceCollection services,
+            Assembly assembly)
+            => services
+                .AddAutoMapper(
+                    (_, config) => config
+                        .AddProfile(new MappingProfile(assembly)),
+                    Array.Empty<Assembly>());
     }
 }

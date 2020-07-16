@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+
 using PetsLostAndFoundSystem.Services.Identity;
-using System.Threading.Tasks;
+using static PetsLostAndFoundSystem.Infrastructure.InfrastructureConstants;
 
 namespace PetsLostAndFoundSystem.Admin.Infrastructure
 {
@@ -14,13 +17,13 @@ namespace PetsLostAndFoundSystem.Admin.Infrastructure
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var token = context.Request.Cookies[InfrastructureConstants.AuthenticationCookieName];
+            var token = context.Request.Cookies[AuthenticationCookieName];
 
             if (token != null)
             {
                 this.currentToken.Set(token);
 
-                context.Request.Headers.Append(InfrastructureConstants.AuthorizationHeaderName, $"{InfrastructureConstants.AuthorizationHeaderValuePrefix} {token}");
+                context.Request.Headers.Append(AuthorizationHeaderName, $"{AuthorizationHeaderValuePrefix} {token}");
             }
 
             await next.Invoke(context);

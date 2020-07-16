@@ -12,4 +12,8 @@
     <ProjectReference Include="..\PetsLostAndFoundSystem\PetsLostAndFoundSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
+
 </Project>

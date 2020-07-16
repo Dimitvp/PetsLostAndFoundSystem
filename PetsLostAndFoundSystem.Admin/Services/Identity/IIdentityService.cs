@@ -3,7 +3,7 @@ using Refit;
 
 using System.Threading.Tasks;
 
-namespace PetsLostAndFoundSystem.Admin.Contracts
+namespace PetsLostAndFoundSystem.Admin.Services.Identity
 {
     public interface IIdentityService
     {

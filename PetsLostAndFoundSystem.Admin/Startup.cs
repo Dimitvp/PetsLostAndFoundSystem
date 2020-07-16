@@ -1,19 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using Refit;
+
+using PetsLostAndFoundSystem.Infrastructure;
+using PetsLostAndFoundSystem.Services.Identity;
 using PetsLostAndFoundSystem.Admin.Infrastructure;
 using PetsLostAndFoundSystem.Admin.Services;
-using PetsLostAndFoundSystem.Services.Identity;
-using Refit;
+using PetsLostAndFoundSystem.Admin.Services.Identity;
+using PetsLostAndFoundSystem.Admin.Services.Statistics;
+using PetsLostAndFoundSystem.Admin.Services.Reporters;
 
 namespace PetsLostAndFoundSystem.Admin
 {
@@ -46,8 +48,8 @@ namespace PetsLostAndFoundSystem.Admin
                 .WithConfiguration(serviceEndpoints.Statistics);
 
             services
-                .AddRefitClient<IDealersService>()
-                .WithConfiguration(serviceEndpoints.Dealers);
+                .AddRefitClient<IReportersService>()
+                .WithConfiguration(serviceEndpoints.Statistics);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
