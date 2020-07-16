@@ -3,10 +3,14 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.Http;
 
+using PetsLostAndFoundSystem.Infrastructure;
+
 namespace PetsLostAndFoundSystem.Services.Identity
 {
     public class CurrentUserService : ICurrentUserService
     {
+        private readonly ClaimsPrincipal user;
+
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
             var user = httpContextAccessor.HttpContext?.User;
@@ -20,5 +24,7 @@ namespace PetsLostAndFoundSystem.Services.Identity
         }
 
         public string UserId { get; }
+
+        public bool IsAdministrator => this.user.IsAdministrator();
     }
 }

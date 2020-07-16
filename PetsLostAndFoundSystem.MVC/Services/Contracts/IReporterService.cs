@@ -1,20 +1,18 @@
-﻿using System.Threading.Tasks;
-
-using PetsLostAndFoundSystem.MVC.Data.Models;
-using PetsLostAndFoundSystem.MVC.Models.Reporters;
+﻿using Refit;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PetsLostAndFoundSystem.MVC.Services.Contracts
 {
-    public interface IReporterService : IDataService<Reporter>
+    public interface IReporterService
     {
-        Task<Reporter> FindByUser(string userId);
+        [Get("/Reporters")]
+        Task<IEnumerable<ReporterDetailsOutputModel>> All();
 
-        Task<int> GetIdByUser(string userId);
+        [Get("/Reportera/{id}")]
+        Task<ReportersDetailsOutputModel> Details(int id);
 
-        Task<bool> HasReports(int reporterId, int reportId);
-
-        Task<ReporterDetailsOutputModel> GetDetails(int id);
-
-        Task<ReporterOutputModel> GetDetailsByReportId(int reportId);
+        [Put("/Reporter/{id}")]
+        Task Edit(int id, ReporterInputModel dealer);
     }
 }

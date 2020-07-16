@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace PetsLostAndFoundfSystem.Reporters
+namespace PetsLostAndFoundSystem.Reporters
 {
     public class Program
     {

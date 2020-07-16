@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
 using Microsoft.EntityFrameworkCore;
-using PetsLostAndFoundfSystem.Reporters.Data.Models;
+using PetsLostAndFoundSystem.Reporters.Data.Models;
 
-namespace PetsLostAndFoundfSystem.Reporters.Data
+namespace PetsLostAndFoundSystem.Reporters.Data
 {
     public class ReportersDbContext : DbContext
     {
@@ -14,11 +14,19 @@ namespace PetsLostAndFoundfSystem.Reporters.Data
 
         public DbSet<Reporter> Reporters { get; set; }
 
+        public DbSet<Report> Reports { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+
+        public DbSet<Pet> Pets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);
-        }S
+        }
     }
 }
