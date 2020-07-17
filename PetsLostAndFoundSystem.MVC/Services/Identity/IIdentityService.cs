@@ -3,7 +3,7 @@
 using PetsLostAndFoundSystem.MVC.Models.Identity;
 using Refit;
 
-namespace PetsLostAndFoundSystem.MVC.Services.Contracts
+namespace PetsLostAndFoundSystem.MVC.Services.Identity
 {
     public interface IIdentityService
     {

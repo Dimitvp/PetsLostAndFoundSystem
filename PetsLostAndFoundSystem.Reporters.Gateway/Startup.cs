@@ -51,7 +51,7 @@ namespace PetsLostAndFoundSystem.Reporters.Gateway
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

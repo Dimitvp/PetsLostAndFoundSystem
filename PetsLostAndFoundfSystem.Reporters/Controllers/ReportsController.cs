@@ -37,6 +37,10 @@ namespace PetsLostAndFoundSystem.Reporters.Controllers
         }
 
         [HttpGet]
+        public async Task<IEnumerable<ReportOutputModel>> All()
+            => await this.reports.GetAll();
+
+        [HttpGet]
         public async Task<ActionResult<SearchReportsOutputModel>> Search(
             [FromQuery] ReportsQuery query)
         {

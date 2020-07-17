@@ -9,6 +9,8 @@ namespace PetsLostAndFoundSystem.MVC.Services
 
         public string Reporters { get; private set; }
 
+        public string Report { get; private set; }
+
         public string this[string service]
             => this.GetType()
                 .GetProperties()

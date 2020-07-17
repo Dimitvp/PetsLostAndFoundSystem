@@ -18,7 +18,7 @@ namespace PetsLostAndFoundSystem.Infrastructure
             }
 
             app
-                .UseHttpsRedirection()
+                //.UseHttpsRedirection()
                 .UseRouting()
                 .UseCors(options => options
                     .AllowAnyOrigin()

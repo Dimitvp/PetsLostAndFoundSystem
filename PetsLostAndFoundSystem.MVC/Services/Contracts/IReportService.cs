@@ -3,17 +3,16 @@ using System.Threading.Tasks;
 
 using Refit;
 
-using PetsLostAndFoundSystem.MVC.Models.Reporters;
-
+using PetsLostAndFoundSystem.MVC.Models.Reports;
 
 namespace PetsLostAndFoundSystem.MVC.Services.Contracts
 {
     public interface IReportService
     {
-        [Get("/Report")]
-        Task<IEnumerable<ReporterDetailsOutputModel>> All();
+        [Get("/Reports")]
+        Task<IEnumerable<ReportDetailsOutputModel>> All();
 
-        [Get("/Reoport/{id}")]
-        Task<ReporterDetailsOutputModel> Details(int id);
+        [Get("/Reoports/{id}")]
+        Task<ReportDetailsOutputModel> Details(int id);
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using PetsLostAndFoundSystem.MVC.Models.Identity;
 using PetsLostAndFoundSystem.MVC.Services.Contracts;
-
+using PetsLostAndFoundSystem.MVC.Services.Identity;
 using static PetsLostAndFoundSystem.Infrastructure.InfrastructureConstants;
 
 namespace PetsLostAndFoundSystem.MVC.Controllers

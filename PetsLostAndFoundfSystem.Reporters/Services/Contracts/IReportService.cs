@@ -9,7 +9,9 @@ namespace PetsLostAndFoundSystem.Reporters.Services.Contracts
 {
     public interface IReportService : IDataService<Report>
     {
-        Task<Report> Find(int id);
+        Task<IEnumerable<ReportOutputModel>> GetAll();
+
+       Task<Report> Find(int id);
 
         Task<bool> Delete(int id);
 

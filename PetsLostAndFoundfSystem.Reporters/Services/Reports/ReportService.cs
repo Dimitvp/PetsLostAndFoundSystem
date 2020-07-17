@@ -105,5 +105,10 @@ namespace PetsLostAndFoundSystem.Reporters.Services.ReportService
 
             return dataQuery;
         }
+
+        public async Task<IEnumerable<ReportOutputModel>> GetAll()
+         => await this.mapper
+               .ProjectTo<ReportOutputModel>(this.All())
+               .ToListAsync();
     }
 }

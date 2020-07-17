@@ -18,5 +18,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PetsLostAndFoundSystem\PetsLostAndFoundSystem.csproj" />
+  </ItemGroup>
+
 
 </Project>

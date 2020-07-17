@@ -15,7 +15,7 @@ using PetsLostAndFoundSystem.MVC.Services.Contracts;
 using PetsLostAndFoundSystem.MVC.Services;
 using PetsLostAndFoundSystem.MVC.Infrastructure.Extensions;
 using PetsLostAndFoundSystem.Services.Identity;
-
+using PetsLostAndFoundSystem.MVC.Services.Identity;
 
 namespace PetsLostAndFoundSystem.MVC
 {
@@ -39,7 +39,7 @@ namespace PetsLostAndFoundSystem.MVC
                 .AddAutoMapperProfile(Assembly.GetExecutingAssembly())
                 .AddTokenAuthentication(this.Configuration)
                 .AddScoped<ICurrentTokenService, CurrentTokenService>()
-                .AddTransient<JwtCookieAuthenticationMiddleware>()
+                .AddTransient<JwtHeaderAuthenticationMiddleware>()
                 .AddControllersWithViews(options => options
                     .Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
@@ -49,6 +49,10 @@ namespace PetsLostAndFoundSystem.MVC
 
             services
                 .AddRefitClient<IReporterService>()
+                .WithConfiguration(serviceEndpoints.Reporters);
+
+            services
+                .AddRefitClient<IReportService>()
                 .WithConfiguration(serviceEndpoints.Reporters);
         }
 
@@ -66,15 +70,14 @@ namespace PetsLostAndFoundSystem.MVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => endpoints
-                    .MapDefaultControllerRoute());
+            app
+                //.UseHttpsRedirection()
+                .UseStaticFiles()
+                .UseRouting()
+                .UseJwtHeaderAuthentication()
+                .UseAuthorization()
+                .UseEndpoints(endpoints => endpoints
+                        .MapDefaultControllerRoute());
 
             //app.UseEndpoints(endpoints =>
             //{

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
+using PetsLostAndFoundSystem.Identity.Data;
 using PetsLostAndFoundSystem.Identity.Data.Models;
 
 namespace PetsLostAndFoundSystem.Identity.Infrastructure
