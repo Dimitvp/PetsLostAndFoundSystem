@@ -21,6 +21,10 @@
 
             public const int EmailMinLength = 3;
             public const int EmailMaxLength = 90;
+
+            public const int MinPhoneNumberLength = 5;
+            public const int MaxPhoneNumberLength = 20;
+            public const string PhoneNumberRegularExpression = @"\+[0-9]*";
         }
     }
 }

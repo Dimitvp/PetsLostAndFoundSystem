@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PetsLostAndFoundSystem.Reporters.Constants
+namespace PetsLostAndFoundSystem.Data.Enums
 {
     [Flags]
     public enum PetType

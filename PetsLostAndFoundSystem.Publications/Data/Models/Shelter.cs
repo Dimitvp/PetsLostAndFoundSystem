@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
-using PetsLostAndFoundSystem.Publications.Constants;
+using PetsLostAndFoundSystem.Data.Enums;
 
 namespace PetsLostAndFoundSystem.Publications.Data.Models
 {
@@ -38,6 +37,8 @@ namespace PetsLostAndFoundSystem.Publications.Data.Models
         public DateTime PublishDate { get; set; }
 
         public bool IsApproved { get; set; }
+
+        public int UserId { get; set; }
 
         public int AuthorId { get; set; }
 

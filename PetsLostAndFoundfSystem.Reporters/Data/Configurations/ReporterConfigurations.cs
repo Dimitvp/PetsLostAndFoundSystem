@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using PetsLostAndFoundSystem.Reporters.Data.Models;
 
-using static PetsLostAndFoundSystem.Reporters.Data.DataConstants.Reporters;
 using static PetsLostAndFoundSystem.Data.DataConstants.Common;
 
 namespace PetsLostAndFoundSystem.Reporters.Data.Configurations

@@ -1,4 +1,4 @@
-﻿namespace PetsLostAndFoundSystem.Publications.Constants
+﻿namespace PetsLostAndFoundSystem.Data.Enums
 {
     public enum TypeShelter
     {

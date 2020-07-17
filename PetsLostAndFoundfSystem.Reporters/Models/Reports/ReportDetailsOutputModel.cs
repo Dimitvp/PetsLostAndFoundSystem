@@ -1,6 +1,7 @@
 ﻿namespace PetsLostAndFoundSystem.Reporters.Models.Reports
 {
-    public class ReportDetailsOutputModel : ReportOutputModel
+    public class ReportDetailsOutputModel
     {
+        public int Id { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using PetsLostAndFoundSystem.MVC.Data.Models;
-
-namespace PetsLostAndFoundSystem.MVC.Models.Reporters
+﻿namespace PetsLostAndFoundSystem.MVC.Models.Reporters
 {
-    public class ReporterOutputModel : IMapFrom<Reporter>
+    public class ReporterOutputModel
     {
         public int Id { get; set; }
 

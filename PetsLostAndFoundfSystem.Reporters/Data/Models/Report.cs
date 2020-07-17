@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using PetsLostAndFoundSystem.Data.Enums;
 using PetsLostAndFoundSystem.Data.Models;
-using PetsLostAndFoundSystem.Reporters.Constants;
 
 namespace PetsLostAndFoundSystem.Reporters.Data.Models
 {

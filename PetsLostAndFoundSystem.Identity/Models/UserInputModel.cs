@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PetsLostAndFoundSystem.Data;
+
+using static PetsLostAndFoundSystem.Data.DataConstants.Common;
 
 namespace PetsLostAndFoundSystem.Identity.Models.Identity
 {
@@ -7,8 +8,8 @@ namespace PetsLostAndFoundSystem.Identity.Models.Identity
     {
         [EmailAddress]
         [Required]
-        [MinLength(DataConstants.EmailMinLength)]
-        [MaxLength(DataConstants.EmailMaxLength)]
+        [MinLength(EmailMinLength)]
+        [MaxLength(EmailMaxLength)]
         public string Email { get; set; }
 
         [Required]

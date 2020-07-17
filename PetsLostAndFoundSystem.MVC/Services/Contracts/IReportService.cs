@@ -1,23 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using PetsLostAndFoundSystem.MVC.Data.Models;
-using PetsLostAndFoundSystem.MVC.Models.Reports;
+using Refit;
+
+using PetsLostAndFoundSystem.MVC.Models.Reporters;
+
 
 namespace PetsLostAndFoundSystem.MVC.Services.Contracts
 {
-    public interface IReportService : IDataService<Report>
+    public interface IReportService
     {
-        Task<Report> Find(int id);
+        [Get("/Report")]
+        Task<IEnumerable<ReporterDetailsOutputModel>> All();
 
-        Task<bool> Delete(int id);
-
-        Task<IEnumerable<ReportOutputModel>> GetListings(ReportsQuery query);
-
-        Task<IEnumerable<MineReportOutputModel>> Mine(int reportId, ReportsQuery query);
-
-        Task<ReportDetailsOutputModel> GetDetails(int id);
-
-        Task<int> Total(ReportsQuery query);
+        [Get("/Reoport/{id}")]
+        Task<ReporterDetailsOutputModel> Details(int id);
     }
 }

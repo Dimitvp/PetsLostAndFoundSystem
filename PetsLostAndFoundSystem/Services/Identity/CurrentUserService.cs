@@ -13,7 +13,7 @@ namespace PetsLostAndFoundSystem.Services.Identity
 
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            var user = httpContextAccessor.HttpContext?.User;
+            this.user = httpContextAccessor.HttpContext?.User;
 
             if (user == null)
             {

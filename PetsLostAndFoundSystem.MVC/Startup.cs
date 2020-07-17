@@ -1,27 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+using Refit;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using PetsLostAndFoundSystem.MVC.Data;
-using PetsLostAndFoundSystem.MVC.Data.Models;
-using PetsLostAndFoundSystem.MVC.Infrastructure.Extensions;
+
+using PetsLostAndFoundSystem.Infrastructure;
 using PetsLostAndFoundSystem.MVC.Services.Contracts;
-using PetsLostAndFoundSystem.MVC.Services.Identity;
-using PetsLostAndFoundSystem.MVC.Services.Reporters;
+using PetsLostAndFoundSystem.MVC.Services;
+using PetsLostAndFoundSystem.MVC.Infrastructure.Extensions;
+using PetsLostAndFoundSystem.Services.Identity;
+
 
 namespace PetsLostAndFoundSystem.MVC
 {
@@ -37,71 +31,30 @@ namespace PetsLostAndFoundSystem.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PetsLostAndFoundDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 4;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-                .AddEntityFrameworkStores<PetsLostAndFoundDbContext>()
-                .AddDefaultTokenProviders();
-
-            //services.AddMvc(options =>
-            //{
-            //    options.EnableEndpointRouting = false;
-            //    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-            //});
-
-            var secret = this.Configuration
-                .GetSection(nameof(ApplicationSettings))
-                .GetValue<string>(nameof(ApplicationSettings.Secret));
+            var serviceEndpoints = this.Configuration
+                .GetSection(nameof(ServiceEndpoints))
+                .Get<ServiceEndpoints>(config => config.BindNonPublicProperties = true);
 
             services
-                .Configure<ApplicationSettings>(this.Configuration
-                    .GetSection(nameof(ApplicationSettings)));
-
-            var key = Encoding.ASCII.GetBytes(secret);
-
-            services
-                .AddAuthentication(authentication =>
-                {
-                    authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(bearer =>
-                {
-                    bearer.RequireHttpsMetadata = false;
-                    bearer.SaveToken = true;
-                    bearer.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-            services.AddControllersWithViews(options => options
+                .AddAutoMapperProfile(Assembly.GetExecutingAssembly())
+                .AddTokenAuthentication(this.Configuration)
+                .AddScoped<ICurrentTokenService, CurrentTokenService>()
+                .AddTransient<JwtCookieAuthenticationMiddleware>()
+                .AddControllersWithViews(options => options
                     .Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services
+                .AddRefitClient<IIdentityService>()
+                .WithConfiguration(serviceEndpoints.Identity);
 
-            services.AddTransient<IIdentityService, IdentityService>();
-            services.AddTransient<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
-            services.AddTransient<IReporterService, ReporterService>();
+            services
+                .AddRefitClient<IReporterService>()
+                .WithConfiguration(serviceEndpoints.Reporters);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDatabaseMigration();
 
             if (env.IsDevelopment())
             {

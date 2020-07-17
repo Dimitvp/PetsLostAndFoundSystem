@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using PetsLostAndFoundSystem.Data.Enums;
 using PetsLostAndFoundSystem.Models;
-using PetsLostAndFoundSystem.Reporters.Constants;
 using PetsLostAndFoundSystem.Reporters.Data.Models;
 
 namespace PetsLostAndFoundSystem.Reporters.Models.Pets

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetsLostAndFoundSystem.MVC.Constants;
-using PetsLostAndFoundSystem.MVC.Data.Models;
-using System;
+using PetsLostAndFoundSystem.Publications.Data.Models;
+
+using static PetsLostAndFoundSystem.Data.DataConstants.Common;
 
 namespace PetsLostAndFoundSystem.MVC.Data.Configurations
 {
@@ -16,12 +16,11 @@ namespace PetsLostAndFoundSystem.MVC.Data.Configurations
             builder
                 .Property(a => a.Name)
                 .IsRequired()
-                .HasMaxLength(DataConstants.UserNameMaxLength);
+                .HasMaxLength(UserNameMaxLength);
 
-            builder.HasOne(s => s.Reporter)
-                .WithMany(re => re.Shelters)
-                .HasForeignKey(re => re.ReporterId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(d => d.UserId)
+                .IsRequired();
+
 
             builder.HasOne(s => s.Author)
                .WithMany(a => a.Shelters)

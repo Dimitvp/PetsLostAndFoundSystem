@@ -1,4 +1,4 @@
-﻿namespace PetsLostAndFoundSystem.Reporters.Constants
+﻿namespace PetsLostAndFoundSystem.Data.Enums
 {
     public enum UserType
     {

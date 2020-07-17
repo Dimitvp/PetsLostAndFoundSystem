@@ -1,10 +1,9 @@
-﻿using PetsLostAndFoundSystem.MVC.Constants;
-using PetsLostAndFoundSystem.MVC.Data.Models;
+﻿using PetsLostAndFoundSystem.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetsLostAndFoundSystem.MVC.Models.Pets
 {
-    public class PetOutputModel : IMapFrom<Pet>
+    public class PetOutputModel
     {
         public int Id { get; set; }
 

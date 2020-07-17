@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PetsLostAndFoundSystem.MVC.Models;
+using PetsLostAndFoundSystem.MVC.Services.Contracts;
 
 namespace PetsLostAndFoundSystem.MVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IReportService reports;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IReportService reports)
         {
             _logger = logger;
+            this.reports = reports;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public async Task<IActionResult> Index()
+            => View(await this.reports.All());
 
         public IActionResult Privacy()
         {

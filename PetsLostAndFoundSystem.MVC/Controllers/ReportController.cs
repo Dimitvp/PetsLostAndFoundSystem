@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PetsLostAndFoundSystem.Controllers;
-using PetsLostAndFoundSystem.MVC.Models.Pets;
-using PetsLostAndFoundSystem.MVC.Models.Reports;
-using PetsLostAndFoundSystem.MVC.Services;
+
 using PetsLostAndFoundSystem.MVC.Services.Contracts;
 
 namespace PetsLostAndFoundSystem.MVC.Controllers
 {
-    public class ReportController : ApiController
+    public class ReportController : Controller
     {
-       
+        private readonly IReporterService reports;
+
+        public ReportController(IReporterService reports)
+        {
+            this.reports = reports;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var report = await this.reports.Details(id);
+
+            return View(await this.reports.Details(id));
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PetsLostAndFoundSystem.Reporters.Data.Models;
+﻿using PetsLostAndFoundSystem.Models;
+using PetsLostAndFoundSystem.Reporters.Data.Models;
 
 namespace PetsLostAndFoundSystem.Reporters.Models.Reports
 {

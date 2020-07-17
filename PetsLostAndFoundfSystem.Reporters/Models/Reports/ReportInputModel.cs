@@ -1,4 +1,4 @@
-﻿using PetsLostAndFoundSystem.Reporters.Constants;
+﻿using PetsLostAndFoundSystem.Data.Enums;
 using PetsLostAndFoundSystem.Reporters.Data.Models;
 using System;
 using System.ComponentModel.DataAnnotations;

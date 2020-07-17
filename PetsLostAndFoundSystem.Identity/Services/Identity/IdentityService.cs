@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using PetsLostAndFoundSystem.Identity.Contracts;
 using PetsLostAndFoundSystem.Identity.Data.Models;
 using PetsLostAndFoundSystem.Identity.Models;
-using PetsLostAndFoundSystem.MVC.Models.Identity;
+using PetsLostAndFoundSystem.Identity.Models.Identity;
 using PetsLostAndFoundSystem.Services;
 
 namespace PetsLostAndFoundSystem.Identity.Services.Identity

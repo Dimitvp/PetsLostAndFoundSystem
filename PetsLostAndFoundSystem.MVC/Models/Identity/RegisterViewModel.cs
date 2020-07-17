@@ -1,17 +1,18 @@
-﻿using PetsLostAndFoundSystem.MVC.Constants;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
+using static PetsLostAndFoundSystem.Data.DataConstants.Common;
 
 namespace PetsLostAndFoundSystem.MVC.Models.Identity
 {
     public class RegisterViewModel
     {
         [Required]
-        [MinLength(DataConstants.UserNameMinLength)]
-        [MaxLength(DataConstants.UserNameMaxLength)]
+        [MinLength(UserNameMinLength)]
+        [MaxLength(UserNameMaxLength)]
         public string Name { get; set; }
 
         [Required]
@@ -30,9 +31,9 @@ namespace PetsLostAndFoundSystem.MVC.Models.Identity
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        //Phone
-        [Required]
-        [RegularExpression(@"\+\d{10,12}", ErrorMessage = "Phone must start with a '+' sign and contain between 10 and 12 symbols.")]
-        public string Phone { get; set; }
+        ////Phone
+        //[Required]
+        //[RegularExpression(@"\+\d{10,12}", ErrorMessage = "Phone must start with a '+' sign and contain between 10 and 12 symbols.")]
+        //public string Phone { get; set; }
     }
 }

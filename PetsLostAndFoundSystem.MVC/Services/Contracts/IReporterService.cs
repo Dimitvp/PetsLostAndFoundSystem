@@ -1,4 +1,5 @@
-﻿using Refit;
+﻿using PetsLostAndFoundSystem.MVC.Models.Reporters;
+using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,13 +7,16 @@ namespace PetsLostAndFoundSystem.MVC.Services.Contracts
 {
     public interface IReporterService
     {
+        [Post("/Reporters")]
+        Task Create(CreateReporterInputModel input);
+
         [Get("/Reporters")]
         Task<IEnumerable<ReporterDetailsOutputModel>> All();
 
-        [Get("/Reportera/{id}")]
-        Task<ReportersDetailsOutputModel> Details(int id);
+        [Get("/Reporters/{id}")]
+        Task<ReporterDetailsOutputModel> Details(int id);
 
-        [Put("/Reporter/{id}")]
-        Task Edit(int id, ReporterInputModel dealer);
+        [Put("/Reporters/{id}")]
+        Task Edit(int id, EditReporterInputModel dealer);
     }
 }

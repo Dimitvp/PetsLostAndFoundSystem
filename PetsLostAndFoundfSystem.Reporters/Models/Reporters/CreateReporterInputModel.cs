@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using static PetsLostAndFoundSystem.Reporters.Data.DataConstants.Reporters;
 using static PetsLostAndFoundSystem.Data.DataConstants.Common;
 
 namespace PetsLostAndFoundSystem.Reporters.Models.Reporters
