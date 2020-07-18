@@ -4,6 +4,8 @@
     {
         public int TotalReports { get; set; }
 
-        public int TotalPets { get; set; }
+        public int TotalFoundPets { get; set; }
+
+        public int TotalLostPets { get; set; }
     }
 }
