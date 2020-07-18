@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetsLostAndFoundSystem.Controllers;
+using PetsLostAndFoundSystem.Messages.Reporters;
 using PetsLostAndFoundSystem.Reporters.Data.Models;
 using PetsLostAndFoundSystem.Reporters.Models.Pets;
 using PetsLostAndFoundSystem.Reporters.Models.Reports;
@@ -21,19 +23,23 @@ namespace PetsLostAndFoundSystem.Reporters.Controllers
         private readonly IPetService pets;
         private readonly ILocationService locations;
         private readonly ICurrentUserService currentUser;
+        private readonly IBus publisher;
 
         public ReportsController(
             IReportService reports,
             IReporterService reporters,
             IPetService pets,
             ILocationService locations,
-            ICurrentUserService currentUser)
+            ICurrentUserService currentUser,
+            IBus publisher)
         {
             this.reports = reports;
             this.reporters = reporters;
             this.pets = pets;
             this.locations = locations;
             this.currentUser = currentUser;
+            this.publisher = publisher;
+
         }
 
         [HttpGet]
@@ -137,6 +143,12 @@ namespace PetsLostAndFoundSystem.Reporters.Controllers
             report.RewardSum = input.RewardSum;
 
             await this.reports.Save(report);
+
+            await this.publisher.Publish(new ReportUpdateMessage
+            {
+                ReportId = report.Id,
+                Status = report.Status
+            });
 
             return Result.Success;
         }

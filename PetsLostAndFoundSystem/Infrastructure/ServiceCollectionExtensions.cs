@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+
 using AutoMapper;
+using MassTransit;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+
 using PetsLostAndFoundSystem.Models;
 using PetsLostAndFoundSystem.Services.Identity;
 
@@ -47,7 +51,8 @@ namespace PetsLostAndFoundSystem.Infrastructure
 
         public static IServiceCollection AddTokenAuthentication(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            JwtBearerEvents events = null)
         {
             var secret = configuration
                 .GetSection(nameof(ApplicationSettings))
@@ -72,6 +77,11 @@ namespace PetsLostAndFoundSystem.Infrastructure
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
+
+                    if (events != null)
+                    {
+                        bearer.Events = events;
+                    }
                 });
 
             services.AddHttpContextAccessor();
@@ -88,5 +98,29 @@ namespace PetsLostAndFoundSystem.Infrastructure
                     (_, config) => config
                         .AddProfile(new MappingProfile(assembly)),
                     Array.Empty<Assembly>());
+
+        public static IServiceCollection AddMessaging(
+            this IServiceCollection services,
+            params Type[] consumers)
+        {
+            services
+                .AddMassTransit(mt =>
+                {
+                    consumers.ForEach(consumer => mt.AddConsumer(consumer));
+
+                    mt.AddBus(bus => Bus.Factory.CreateUsingRabbitMq(rmq =>
+                    {
+                        rmq.Host("localhost");
+
+                        consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
+                        {
+                            endpoint.ConfigureConsumer(bus, consumer);
+                        }));
+                    }));
+                })
+                .AddMassTransitHostedService();
+
+            return services;
+        }
     }
 }
