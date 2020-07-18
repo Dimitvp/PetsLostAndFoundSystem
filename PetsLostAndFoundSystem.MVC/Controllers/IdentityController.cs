@@ -15,18 +15,18 @@ namespace PetsLostAndFoundSystem.MVC.Controllers
     public class IdentityController : CommunicationBaseController
     {
         private readonly IIdentityService identity;
-        private readonly ICurrentUserService currentUser;
+        //private readonly ICurrentUserService currentUser;
         private readonly IReporterService reporters;
         private readonly IMapper mapper;
 
         public IdentityController(
             IIdentityService identity,
-            ICurrentUserService currentUser,
+            //ICurrentUserService currentUser,
             IReporterService reporters,
             IMapper mapper)
         {
             this.identity = identity;
-            this.currentUser = currentUser;
+            //this.currentUser = currentUser;
             this.reporters = reporters;
             this.mapper = mapper;
         }
@@ -34,18 +34,14 @@ namespace PetsLostAndFoundSystem.MVC.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route(nameof(Register))]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
+        public IActionResult Register() => View();
 
         [HttpPost]
         [Route(nameof(Register))]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(CreateUserFormModel input)
+        public async Task<ActionResult> Register(RegisterViewModel input)
             => await this.Handle(
-                async () => await this.identity.Register(this.mapper.Map<UserInputModel>(input)),
+                async () => await this.identity.Register(this.mapper.Map<CreateUserFormModel>(input)),
             success: RedirectToAction(nameof(ReporterController.Create), "Reporter"),
             failure: View("../Home/Index", input));
         //{

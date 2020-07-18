@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ReportDetailsOutputModel>
+﻿@*@model IEnumerable<ReportDetailsOutputModel>*@
 
 @{
     ViewData["Title"] = "Home Page";
@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var report in Model)
+                @*@foreach (var report in Model)
                 {
                     <tr>
                         <td>@report.PicUrl</td>
@@ -34,7 +34,7 @@
                             </a>
                         </td>
                     </tr>
-                }
+                }*@
             </tbody>
         </table>
     </div>

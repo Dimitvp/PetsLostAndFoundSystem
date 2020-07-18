@@ -11,7 +11,7 @@ namespace PetsLostAndFoundSystem.MVC.Services.Identity
         Task<UserOutputModel> Login([Body] UserInputModel loginInput);
 
         [Post("/Identity/Register")]
-        Task<UserOutputModel> Register([Body] UserInputModel registerInput);
+        Task<UserOutputModel> Register([Body] CreateUserFormModel registerInput);
 
         [Put("/Identity/ChangePassword")]
         Task<ChangePasswordInputModel> ChangePassword([Body] ChangePasswordInputModel input);

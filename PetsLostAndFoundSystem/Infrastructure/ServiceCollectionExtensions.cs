@@ -23,6 +23,7 @@ namespace PetsLostAndFoundSystem.Infrastructure
                 .AddDatabase<TDbContext>(configuration)
                 .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
+                .AddAutoMapperProfile(Assembly.GetCallingAssembly())
                 .AddControllers();
 
             return services;

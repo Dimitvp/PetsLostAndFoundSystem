@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 using static PetsLostAndFoundSystem.Data.DataConstants.Common;
 
@@ -10,10 +6,6 @@ namespace PetsLostAndFoundSystem.MVC.Models.Identity
 {
     public class RegisterViewModel
     {
-        [Required]
-        [MinLength(UserNameMinLength)]
-        [MaxLength(UserNameMaxLength)]
-        public string Name { get; set; }
 
         [Required]
         [EmailAddress]

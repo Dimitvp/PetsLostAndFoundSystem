@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using PetsLostAndFoundSystem.Models;
 
 namespace PetsLostAndFoundSystem.MVC.Models.Identity
 {
-    public class CreateUserFormModel
+    public class CreateUserFormModel : IMapFrom<RegisterViewModel>
     {
         public string Email { get; set; }
 

@@ -1,4 +1,6 @@
-﻿namespace PetsLostAndFoundSystem.MVC.Models.Reporters
+﻿using PetsLostAndFoundSystem.Models;
+
+namespace PetsLostAndFoundSystem.MVC.Models.Reporters
 {
     public class EditReporterInputModel : IMapFrom<EditReporterFormModel>
     {

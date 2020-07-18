@@ -1,4 +1,6 @@
-﻿namespace PetsLostAndFoundSystem.MVC.Models.Identity
+﻿using PetsLostAndFoundSystem.Models;
+
+namespace PetsLostAndFoundSystem.MVC.Models.Identity
 {
     public class ChangePasswordInputModel : IMapFrom<ChangePasswordFormModel>
     {

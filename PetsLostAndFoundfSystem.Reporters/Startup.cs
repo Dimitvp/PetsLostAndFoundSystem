@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PetsLostAndFoundSystem.Infrastructure;
 using PetsLostAndFoundSystem.Reporters.Data;
+using PetsLostAndFoundSystem.Reporters.Services;
+using PetsLostAndFoundSystem.Reporters.Services.Contracts;
 using PetsLostAndFoundSystem.Services;
 
 namespace PetsLostAndFoundSystem.Reporters
@@ -18,7 +20,8 @@ namespace PetsLostAndFoundSystem.Reporters
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService<ReportersDbContext>(this.Configuration);
+                .AddWebService<ReportersDbContext>(this.Configuration)
+                .AddTransient<IReporterService, ReporterService>();
                 //.AddTransient<IDataSeeder, ReportersDataSeeder>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

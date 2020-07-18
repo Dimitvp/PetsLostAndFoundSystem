@@ -26,6 +26,11 @@ namespace PetsLostAndFoundSystem.MVC.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route(nameof(Create))]
+        public IActionResult Create() => View();
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<int>> Create(CreateReporterFormModel input)

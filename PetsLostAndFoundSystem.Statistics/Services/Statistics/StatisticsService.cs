@@ -14,9 +14,7 @@
 
         public StatisticsService(StatisticsDbContext db, IMapper mapper)
             : base(db)
-        {
-            this.mapper = mapper;
-        }
+            => this.mapper = mapper;
 
         public async Task<StatisticsOutputModel> Full()
             => await this.mapper

@@ -21,8 +21,8 @@ namespace PetsLostAndFoundSystem.MVC.Controllers
             this.reports = reports;
         }
 
-        public async Task<IActionResult> Index()
-            => View(await this.reports.All());
+        public  IActionResult Index()
+            => View();//await this.reports.All()
 
         public IActionResult Privacy()
         {
