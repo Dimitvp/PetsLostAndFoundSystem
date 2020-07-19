@@ -4,7 +4,7 @@
     "PetsLostAndFoundSystem.Notifications": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": http://localhost:5012",//"https://localhost:5013;
+      "applicationUrl": "http://localhost:5012",//"https://localhost:5013;
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

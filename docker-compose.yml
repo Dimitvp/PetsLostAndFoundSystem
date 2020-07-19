@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+
+    data:
+        container_name: sqlserver
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports: 
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=yourStrongPassword12!@
+        volumes: 
+            - sqldata:/var/opt/mssql 
+        networks: 
+            - PetsLostAndFoundSystem-network
+    
+    messages:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        hostname: "rabbitmq"
+        environment:
+            - RABBITMQ_ERLANG_COOKIE=Rand0mR4bbitMqCo0k1e
+            - RABBITMQ_DEFAULT_USER=rabbitmq
+            - RABBITMQ_DEFAULT_PASS=rabbitmq
+        networks: 
+            - PetsLostAndFoundSystem-network
+
+    identity:
+        container_name: identity
+        build:
+            context: ./PetsLostAndFoundSystem
+            dockerfile: ./PetsLostAndFoundSystem.Identity/Dockerfile
+        ports: 
+            - "5002:80"
+        env_file: PetsLostAndFoundSystem/PetsLostAndFoundSystem/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundIdentityDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    reporters:
+        container_name: reporters
+        build:
+            context: ./PetsLostAndFoundSystem
+            dockerfile: ./PetsLostAndFoundSystem.Reporters/Dockerfile
+        ports: 
+            - "5004:80"
+        env_file: PetsLostAndFoundSystem/PetsLostAndFoundSystem/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundReportersDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/reporters/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    statistics:
+        container_name: statistics
+        build:
+            context: ./PetsLostAndFoundSystem
+            dockerfile: ./PetsLostAndFoundSystem.Statistics/Dockerfile
+        ports: 
+            - "5008:80"
+        env_file: PetsLostAndFoundSystem/PetsLostAndFoundSystem/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundStatisticsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+
+networks:
+    PetsLostAndFoundSystem-network:
+
+volumes:
+    sqldata:

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.MVC"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Admin", "PetsLostAndFoundSystem.Admin\PetsLostAndFoundSystem.Admin.csproj", "{34412A63-34AD-4F67-94A1-4ADF0CBE690D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Reporters", "PetsLostAndFoundfSystem.Reporters\PetsLostAndFoundSystem.Reporters.csproj", "{008210CC-FDF4-41A6-AF71-A673F4BA5FDB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Identity", "PetsLostAndFoundSystem.Identity\PetsLostAndFoundSystem.Identity.csproj", "{F05F7449-E92F-47CD-88E5-82CA6A6A0B8E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Publications", "PetsLostAndFoundSystem.Publications\PetsLostAndFoundSystem.Publications.csproj", "{078929D7-2E2F-46F1-9B89-E658A906BD03}"
@@ -19,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Repo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Statistics", "PetsLostAndFoundSystem.Statistics\PetsLostAndFoundSystem.Statistics.csproj", "{95D50799-3B03-4D95-A542-91DEA40CFD59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetsLostAndFoundSystem.Notifications", "PetsLostAndFoundSystem.Notifications\PetsLostAndFoundSystem.Notifications.csproj", "{198BBD53-135A-4331-B73B-A1273BD4F34A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Notifications", "PetsLostAndFoundSystem.Notifications\PetsLostAndFoundSystem.Notifications.csproj", "{198BBD53-135A-4331-B73B-A1273BD4F34A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsLostAndFoundSystem.Reporters", "PetsLostAndFoundSystem.Reporters\PetsLostAndFoundSystem.Reporters.csproj", "{2E57B74E-BEA3-436E-A9C0-109BE6737084}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetsLostAndFoundSystem.Watchdog", "PetsLostAndFoundSystem.Watchdog\PetsLostAndFoundSystem.Watchdog.csproj", "{80AB718E-B535-47EE-80A3-025B63D13F20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +41,6 @@ Global
 		{34412A63-34AD-4F67-94A1-4ADF0CBE690D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34412A63-34AD-4F67-94A1-4ADF0CBE690D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34412A63-34AD-4F67-94A1-4ADF0CBE690D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{008210CC-FDF4-41A6-AF71-A673F4BA5FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{008210CC-FDF4-41A6-AF71-A673F4BA5FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{008210CC-FDF4-41A6-AF71-A673F4BA5FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{008210CC-FDF4-41A6-AF71-A673F4BA5FDB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F05F7449-E92F-47CD-88E5-82CA6A6A0B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F05F7449-E92F-47CD-88E5-82CA6A6A0B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F05F7449-E92F-47CD-88E5-82CA6A6A0B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +61,14 @@ Global
 		{198BBD53-135A-4331-B73B-A1273BD4F34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{198BBD53-135A-4331-B73B-A1273BD4F34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{198BBD53-135A-4331-B73B-A1273BD4F34A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E57B74E-BEA3-436E-A9C0-109BE6737084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E57B74E-BEA3-436E-A9C0-109BE6737084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E57B74E-BEA3-436E-A9C0-109BE6737084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E57B74E-BEA3-436E-A9C0-109BE6737084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80AB718E-B535-47EE-80A3-025B63D13F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AB718E-B535-47EE-80A3-025B63D13F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AB718E-B535-47EE-80A3-025B63D13F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AB718E-B535-47EE-80A3-025B63D13F20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -25,7 +25,9 @@ namespace PetsLostAndFoundSystem.Statistics
                 .AddTransient<IDataSeeder, StatisticsDataSeeder>()
                 .AddTransient<IStatisticsService, StatisticsService>()
                 .AddTransient<IReportViewService, ReportViewService>()
-                .AddMessaging(typeof(ReportCreatedConsumer));
+                .AddMessaging(
+                    this.Configuration, 
+                    typeof(ReportCreatedConsumer));
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

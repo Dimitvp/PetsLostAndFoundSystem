@@ -1,21 +1,24 @@
-﻿using System;
-using System.Reflection;
-using System.Text;
-
-using AutoMapper;
-using MassTransit;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-
-using PetsLostAndFoundSystem.Models;
-using PetsLostAndFoundSystem.Services.Identity;
-
-namespace PetsLostAndFoundSystem.Infrastructure
+﻿namespace PetsLostAndFoundSystem.Infrastructure
 {
+    using System;
+    using System.Reflection;
+    using System.Text;
+
+    using AutoMapper;
+    using GreenPipes;
+    using Hangfire;
+    using MassTransit;
+
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+
+    using Models;
+    using PetsLostAndFoundSystem.Messages;
+    using Services.Identity;
+
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddWebService<TDbContext>(
@@ -46,8 +49,9 @@ namespace PetsLostAndFoundSystem.Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
             => services
-                .Configure<ApplicationSettings>(configuration
-                    .GetSection(nameof(ApplicationSettings)));
+                .Configure<ApplicationSettings>(
+                    configuration.GetSection(nameof(ApplicationSettings)),
+                    config => config.BindNonPublicProperties = true);
 
         public static IServiceCollection AddTokenAuthentication(
             this IServiceCollection services,
@@ -99,26 +103,62 @@ namespace PetsLostAndFoundSystem.Infrastructure
                         .AddProfile(new MappingProfile(assembly)),
                     Array.Empty<Assembly>());
 
+        public static IServiceCollection AddHealth(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var healthChecks = services.AddHealthChecks();
+
+            healthChecks
+                .AddSqlServer(configuration.GetDefaultConnectionString());
+
+            healthChecks
+                .AddRabbitMQ(rabbitConnectionString: "amqp://rabbitmq:rabbitmq@rabbitmq/");
+
+            return services;
+        }
+
         public static IServiceCollection AddMessaging(
             this IServiceCollection services,
+            IConfiguration configuration,
             params Type[] consumers)
         {
             services
-                .AddMassTransit(mt =>
-                {
-                    consumers.ForEach(consumer => mt.AddConsumer(consumer));
+                 .AddMassTransit(mt =>
+                 {
+                     consumers.ForEach(consumer => mt.AddConsumer(consumer));
 
-                    mt.AddBus(bus => Bus.Factory.CreateUsingRabbitMq(rmq =>
-                    {
-                        rmq.Host("localhost");
+                     mt.AddBus(context => Bus.Factory.CreateUsingRabbitMq(rmq =>
+                     {
+                         rmq.Host("rabbitmq", host =>
+                         {
+                             host.Username("rabbitmq");
+                             host.Password("rabbitmq");
+                         });
 
-                        consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
-                        {
-                            endpoint.ConfigureConsumer(bus, consumer);
-                        }));
-                    }));
-                })
-                .AddMassTransitHostedService();
+                         rmq.UseHealthCheck(context);
+
+                         consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
+                         {
+                             endpoint.PrefetchCount = 6;
+                             endpoint.UseMessageRetry(retry => retry.Interval(10, 1000));
+
+                             endpoint.ConfigureConsumer(context, consumer);
+                         }));
+                     }));
+                 })
+                 .AddMassTransitHostedService();
+
+            services
+                .AddHangfire(config => config
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSqlServerStorage(configuration.GetDefaultConnectionString()));
+
+            services.AddHangfireServer();
+
+            services.AddHostedService<MessagesHostedService>();
 
             return services;
         }

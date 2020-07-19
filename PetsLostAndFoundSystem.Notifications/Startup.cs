@@ -18,12 +18,14 @@ namespace PetsLostAndFoundSystem.Notifications
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-            => services
+            =>  services
                 .AddCors()
                 .AddTokenAuthentication(
                     this.Configuration,
                     JwtConfiguration.BearerEvents)
-                .AddMessaging(typeof(ReportCreatedConsumer))
+                .AddMessaging(
+                    this.Configuration,
+                    typeof(ReportCreatedConsumer))
                 .AddSignalR();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

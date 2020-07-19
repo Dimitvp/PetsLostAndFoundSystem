@@ -21,7 +21,7 @@ namespace PetsLostAndFoundSystem.Reporters
             => services
                 .AddWebService<ReportersDbContext>(this.Configuration)
                 .AddTransient<IReporterService, ReporterService>()
-                .AddMessaging();
+                .AddMessaging(this.Configuration);
                 //.AddTransient<IDataSeeder, ReportersDataSeeder>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
