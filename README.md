@@ -1,3 +1,8 @@
+# Update 19/07/2020
+-All microservices are communicating between each other.
+-More setup is needed in the MVC project in the controllers, models and view in order for the system to work correctly.
+-In order for the docker-compose file to work, it needs to be plased one directory out of the solution. There is a path problme with it that i have to solve.
+
 # PetsLostAndFoundSystem
 A project for the 'Architecture of ASP.NET Core Microservices Applications - June 2020' course in SoftUni.
 
