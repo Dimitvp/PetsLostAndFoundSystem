@@ -32,11 +32,11 @@ services:
     identity:
         container_name: identity
         build:
-            context: ./PetsLostAndFoundSystem
+            context: ./PetsLostAndFound
             dockerfile: ./PetsLostAndFoundSystem.Identity/Dockerfile
         ports: 
             - "5002:80"
-        env_file: PetsLostAndFoundSystem/PetsLostAndFoundSystem/Common.env
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundIdentityDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
         restart: on-failure
@@ -50,11 +50,11 @@ services:
     reporters:
         container_name: reporters
         build:
-            context: ./PetsLostAndFoundSystem
+            context: ./PetsLostAndFound
             dockerfile: ./PetsLostAndFoundSystem.Reporters/Dockerfile
         ports: 
             - "5004:80"
-        env_file: PetsLostAndFoundSystem/PetsLostAndFoundSystem/Common.env
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundReportersDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
         restart: on-failure
@@ -68,11 +68,11 @@ services:
     statistics:
         container_name: statistics
         build:
-            context: ./PetsLostAndFoundSystem
+            context: ./PetsLostAndFound
             dockerfile: ./PetsLostAndFoundSystem.Statistics/Dockerfile
         ports: 
             - "5008:80"
-        env_file: PetsLostAndFoundSystem/PetsLostAndFoundSystem/Common.env
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundStatisticsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
         restart: on-failure
