@@ -28,7 +28,7 @@ services:
             - RABBITMQ_DEFAULT_PASS=rabbitmq
         networks: 
             - PetsLostAndFoundSystem-network
-
+            
     identity:
         container_name: identity
         build:
@@ -45,7 +45,7 @@ services:
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
-            - data
+            - data        
             
     reporters:
         container_name: reporters
@@ -78,6 +78,104 @@ services:
         restart: on-failure
         volumes:
             - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    publications:
+        container_name: publications
+        build:
+            context: ./PetsLostAndFound
+            dockerfile: ./PetsLostAndFoundSystem.Publications/Dockerfile
+        ports: 
+            - "5006:80"
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundPublicationsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    mvc:
+        container_name: mvc
+        build:
+            context: ./PetsLostAndFound
+            dockerfile: ./PetsLostAndFoundSystem.MVC/Dockerfile
+        ports: 
+            - "5000:80"
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    reportersgateway:
+        container_name: reportersGateway
+        build:
+            context: ./PetsLostAndFound
+            dockerfile: ./PetsLostAndFoundSystem.Reporters.Gateway/Dockerfile
+        ports: 
+            - "5010:80"
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    admin:
+        container_name: admin
+        build:
+            context: ./PetsLostAndFound
+            dockerfile: ./PetsLostAndFoundSystem.Admin/Dockerfile
+        ports: 
+            - "5001:80"
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    notifications:
+        container_name: notifications
+        build:
+            context: ./PetsLostAndFound
+            dockerfile: ./PetsLostAndFoundSystem.Notifications/Dockerfile
+        ports: 
+            - "5012:80"
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - PetsLostAndFoundSystem-network
+        depends_on:
+            - data
+            
+    watchdog:
+        container_name: watchdog
+        build:
+            context: ./PetsLostAndFound
+            dockerfile: ./PetsLostAndFoundSystem.Watchdog/Dockerfile
+        ports: 
+            - "5014:80"
+        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
