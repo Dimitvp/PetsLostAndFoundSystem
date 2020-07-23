@@ -30,6 +30,7 @@
                 .AddDatabase<TDbContext>(configuration)
                 .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
+                .AddHealth(configuration)
                 .AddAutoMapperProfile(Assembly.GetCallingAssembly())
                 .AddControllers();
 
