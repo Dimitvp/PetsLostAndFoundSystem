@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PetsLostAndFoundSystem.Data.Models;
 using System.Linq;
@@ -14,19 +15,32 @@ namespace PetsLostAndFoundSystem.Messages
         private readonly IRecurringJobManager recurringJob;
         private readonly DbContext data;
         private readonly IBus publisher;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public MessagesHostedService(
             IRecurringJobManager recurringJob,
             DbContext data,
-            IBus publisher)
+            IBus publisher,
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.recurringJob = recurringJob;
             this.data = data;
             this.publisher = publisher;
+            this._serviceScopeFactory = serviceScopeFactory;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            using (var scope = this._serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<DbContext>();
+
+                if (!dbContext.Database.CanConnect())
+                {
+                    dbContext.Database.Migrate();
+                }
+            }
+
             this.recurringJob.AddOrUpdate(
                 nameof(MessagesHostedService),
                 () => this.ProcessPendingMessages(),

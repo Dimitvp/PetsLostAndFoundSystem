@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 
 using Microsoft.EntityFrameworkCore;
+using PetsLostAndFoundSystem.Data;
 using PetsLostAndFoundSystem.Reporters.Data.Models;
 
 namespace PetsLostAndFoundSystem.Reporters.Data
 {
-    public class ReportersDbContext : DbContext
+    public class ReportersDbContext : MessageDbContext
     {
         public ReportersDbContext(DbContextOptions<ReportersDbContext> options)
             : base(options)
@@ -22,11 +23,6 @@ namespace PetsLostAndFoundSystem.Reporters.Data
 
         public DbSet<Pet> Pets { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-            base.OnModelCreating(builder);
-        }
+        protected override Assembly ConfigurationsAssembly => Assembly.GetExecutingAssembly();
     }
 }
