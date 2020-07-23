@@ -1,3 +1,5 @@
+# Update 22/07/2020
+-Docker compose problem fixed
 # Update 19/07/2020
 -All microservices are communicating between each other.
 -More setup is needed in the MVC project in the controllers, models and view in order for the system to work correctly.
