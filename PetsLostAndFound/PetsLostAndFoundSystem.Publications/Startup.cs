@@ -1,51 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using PetsLostAndFoundSystem.Infrastructure;
+using PetsLostAndFoundSystem.Publications.Data;
+using PetsLostAndFoundSystem.Publications.Services.Article;
+using PetsLostAndFoundSystem.Publications.Services.Author;
+using PetsLostAndFoundSystem.Publications.Services.Contracts;
+using PetsLostAndFoundSystem.Publications.Services.Shelter;
 
 namespace PetsLostAndFoundSystem.Publications
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+             => this.Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-        }
+            => services
+                .AddWebService<PublicationsDbContext>(this.Configuration)
+                .AddTransient<IArticleService, ArticleService>()
+                .AddTransient<IAuthorService, AuthorService>()
+                .AddTransient<IShelterService, ShelterService>();
+                //.AddMessaging(this.Configuration);
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+            => app
+                .UseWebService(env)
+                .Initialize();
     }
 }
