@@ -23,8 +23,8 @@ namespace PetsLostAndFoundSystem.Publications
                 .AddWebService<PublicationsDbContext>(this.Configuration)
                 .AddTransient<IArticleService, ArticleService>()
                 .AddTransient<IAuthorService, AuthorService>()
-                .AddTransient<IShelterService, ShelterService>();
-                //.AddMessaging(this.Configuration);
+                .AddTransient<IShelterService, ShelterService>()
+                .AddMessaging(this.Configuration);
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

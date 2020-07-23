@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetsLostAndFoundSystem.Reporters.Data;
 
 namespace PetsLostAndFoundSystem.Reporters.Migrations
 {
     [DbContext(typeof(ReportersDbContext))]
-    partial class ReportersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200723201326_AddMessages")]
+    partial class AddMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
