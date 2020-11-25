@@ -1,3 +1,8 @@
+# Update 22/11/2020
+Adding changes related to the course Process Automation with ASP.NET Core Microservices - октомври 2020
+https://softuni.bg/trainings/3162/process-automation-with-asp-net-core-microservices-october-2020#lesson-18169
+
+-Jenkins file added
 # Update 22/07/2020
 -Docker compose problem fixed
 # Update 19/07/2020
