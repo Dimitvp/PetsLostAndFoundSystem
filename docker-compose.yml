@@ -40,9 +40,10 @@ services:
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundIdentityDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - IdentitySettings__AdminPassword=adminpass12!
         restart: on-failure
         volumes:
-            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
@@ -59,13 +60,17 @@ services:
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundReportersDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - MessageQueueSettings__Host=rabbitmq
+            - MessageQueueSettings__UserName=rabbitmquser
+            - MessageQueueSettings__Password=rabbitmqPassword12!
         restart: on-failure
         volumes:
-            - ./.aspnet/reporters/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - .data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
             - data
+            - messages
             
     statistics:
         container_name: statistics
@@ -78,13 +83,17 @@ services:
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundStatisticsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - MessageQueueSettings__Host=rabbitmq
+            - MessageQueueSettings__UserName=rabbitmquser
+            - MessageQueueSettings__Password=rabbitmqPassword12!
         restart: on-failure
         volumes:
-            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
             - data
+            - messages
             
     publications:
         container_name: publications
@@ -97,13 +106,17 @@ services:
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetsLostAndFoundPublicationsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - MessageQueueSettings__Host=rabbitmq
+            - MessageQueueSettings__UserName=rabbitmquser
+            - MessageQueueSettings__Password=rabbitmqPassword12!
         restart: on-failure
         volumes:
-            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
             - data
+            - messages
             
     mvc:
         container_name: mvc
@@ -116,11 +129,16 @@ services:
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         restart: on-failure
         volumes:
-            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
             - data
+            - messages
+            - identity
+            - dealers
+            - statistics
+            - notifications
             
     reportersgateway:
         container_name: reportersGateway
@@ -133,11 +151,16 @@ services:
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
         restart: on-failure
         volumes:
-            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
             - data
+            - messages
+            - identity
+            - dealers
+            - statistics
+            - notifications
             
     admin:
         container_name: admin
@@ -148,13 +171,19 @@ services:
         ports: 
             - "5001:80"
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        environment:
+            - ServiceEndpoints__Identity=http://identity
+            - ServiceEndpoints__Dealers=http://dealers
+            - ServiceEndpoints__Statistics=http://statistics
         restart: on-failure
         volumes:
-            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
-            - data
+             - identity
+            - dealers
+            - statistics
             
     notifications:
         container_name: notifications
@@ -165,13 +194,18 @@ services:
         ports: 
             - "5012:80"
         env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+        environment:
+            - NotificationSettings__AllowedOrigins=http://localhost
+            - MessageQueueSettings__Host=rabbitmq
+            - MessageQueueSettings__UserName=rabbitmquser
+            - MessageQueueSettings__Password=rabbitmqPassword12!
         restart: on-failure
         volumes:
-            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
-            - data
+            - messages
             
     watchdog:
         container_name: watchdog
@@ -181,17 +215,31 @@ services:
             dockerfile: ./PetsLostAndFoundSystem.Watchdog/Dockerfile
         ports: 
             - "5014:80"
-        env_file: PetsLostAndFound/PetsLostAndFoundSystem/Common.env
+         environment:
+            - HealthChecks-UI__HealthChecks__0__Name=Identity
+            - HealthChecks-UI__HealthChecks__0__Uri=http://identity/health
+            - HealthChecks-UI__HealthChecks__1__Name=Dealers
+            - HealthChecks-UI__HealthChecks__1__Uri=http://dealers/health
+            - HealthChecks-UI__HealthChecks__2__Name=Statistics
+            - HealthChecks-UI__HealthChecks__2__Uri=http://statistics/health
+            - HealthChecks-UI__HealthChecks__3__Name=Notifications
+            - HealthChecks-UI__HealthChecks__3__Uri=http://notifications/health
+            - HealthChecks-UI__HealthChecks__4__Name=Admin
+            - HealthChecks-UI__HealthChecks__4__Uri=http://admin/health
         restart: on-failure
-        volumes:
-            - ./.aspnet/mvc/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
-            - data
+            - identity
+            - dealers
+            - statistics
+            - notifications
+            - admin
 
 networks:
     PetsLostAndFoundSystem-network:
 
 volumes:
     sqldata:
+    rabbitmq:
+    data-protection:

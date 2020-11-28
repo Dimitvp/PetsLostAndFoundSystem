@@ -9,7 +9,7 @@ pipeline {
     stage('Run Unit Tests') {
       steps {
         powershell(script: """ 
-          cd Server
+          cd PetsLostAndFound
           dotnet test
           cd ..
         """)
