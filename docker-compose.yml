@@ -181,7 +181,7 @@ services:
         networks: 
             - PetsLostAndFoundSystem-network
         depends_on:
-             - identity
+            - identity
             - dealers
             - statistics
             
@@ -215,7 +215,7 @@ services:
             dockerfile: ./PetsLostAndFoundSystem.Watchdog/Dockerfile
         ports: 
             - "5014:80"
-         environment:
+        environment:
             - HealthChecks-UI__HealthChecks__0__Name=Identity
             - HealthChecks-UI__HealthChecks__0__Uri=http://identity/health
             - HealthChecks-UI__HealthChecks__1__Name=Dealers
