@@ -136,7 +136,7 @@ services:
             - data
             - messages
             - identity
-            - dealers
+            - reporters
             - statistics
             - notifications
             
@@ -158,7 +158,7 @@ services:
             - data
             - messages
             - identity
-            - dealers
+            - reporters
             - statistics
             - notifications
             
@@ -182,7 +182,7 @@ services:
             - PetsLostAndFoundSystem-network
         depends_on:
             - identity
-            - dealers
+            - reporters
             - statistics
             
     notifications:
@@ -231,7 +231,7 @@ services:
             - PetsLostAndFoundSystem-network
         depends_on:
             - identity
-            - dealers
+            - reporters
             - statistics
             - notifications
             - admin
