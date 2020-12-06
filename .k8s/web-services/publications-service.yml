@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: notifications-service-data
+  name: publications-service-data
 spec:
   accessModes:
   - ReadWriteOnce
@@ -15,29 +15,29 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: notifications-service
+  name: publications-service
 spec:
   type: LoadBalancer
   ports:
-  - port: 5012
+  - port: 5006
     targetPort: 80
   selector:
-    web-service: notifications
+    web-service: publications
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: notifications-service
+  name: publications-service
 spec:
   selector:
     matchLabels:
-      web-service: notifications
+      web-service: publications
   template:
     metadata:
       labels:
-        web-service: notifications
+        web-service: publications
         system: server
     spec:
       affinity:
@@ -45,11 +45,11 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                web-service: notifications
+                web-service: publications
             topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: notifications-service
-        image: dimitvp/petslostandfoundsystem-notifications-service:latest
+      - name: publications-service
+        image: dimitvp/petslostandfoundsystem-publications-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -63,11 +63,21 @@ spec:
             secretKeyRef:
               name: environment-secrets
               key: security-token-secret
-        - name: NotificationSettings__AllowedOrigins
+        - name: ApplicationSettings__SeedInitialData
           valueFrom:
             configMapKeyRef:
               name: environment-settings
-              key: notifications-allowed-origins
+              key: seed-initial-data
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: environment-secrets
+              key: publications-service-connection-string
+        - name: ConnectionStrings__CronJobsConnection
+          valueFrom:
+            secretKeyRef:
+              name: environment-secrets
+              key: publications-service-cron-jobs-connection-string
         - name: MessageQueueSettings__Host
           valueFrom:
             configMapKeyRef:
@@ -84,9 +94,9 @@ spec:
               name: environment-secrets
               key: event-bus-password
         volumeMounts:
-        - name: notifications-service-data
+        - name: publications-service-data
           mountPath: /root/.aspnet/DataProtection-Keys
       volumes:
-      - name: notifications-service-data
+      - name: publications-service-data
         persistentVolumeClaim:
-          claimName: notifications-service-data
+          claimName: publications-service-data

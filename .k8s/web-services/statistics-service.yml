@@ -19,7 +19,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 5003
+  - port: 5008
     targetPort: 80
   selector:
     web-service: statistics

@@ -18,7 +18,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 5000
+  - port: 5001
     targetPort: 80
   selector:
     web-client: admin-client
