@@ -6,6 +6,11 @@ pipeline {
     //     echo "$GIT_BRANCH"
     //   }
     // }
+    stage('Pull Changes') {
+      steps {
+        powershell(script: "git pull")
+      }
+    }
     stage('Run Unit Tests') {
       steps {
         powershell(script: """ 
@@ -54,6 +59,17 @@ pipeline {
             image.push("1.0.${env.BUILD_ID}")
             image.push('latest')
           }
+        }
+      }
+    }
+    stage('Deploy Development') {
+      when { branch 'main' }
+      steps {
+        withKubeConfig([credentialsId: 'DevelopmentServer', serverUrl: '']) {
+		       powershell(script: 'kubectl apply -f ./.k8s/.environment/development.yml') 
+		       powershell(script: 'kubectl apply -f ./.k8s/databases') 
+		       powershell(script: 'kubectl apply -f ./.k8s/event-bus') 
+		       powershell(script: 'kubectl apply -f ./.k8s/web-services') 
         }
       }
     }
