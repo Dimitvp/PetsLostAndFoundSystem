@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: user-client
-        image: dimitvp/petslostandfoundsystem-user-client:latest
+        image: dimitvp/petslostandfoundsystem-user-MVC-client:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
